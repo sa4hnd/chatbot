@@ -5,10 +5,23 @@
     <style>
         body {
             width: 400px;
+            min-height: 600px;
+            margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
             background: #1a1a1a;
             color: #fff;
+            position: relative;
+            overflow-y: auto;
+        }
+        #popup-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background: #1a1a1a;
+            z-index: 999998;
         }
         .header {
             display: flex;
@@ -76,76 +89,78 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>HamzaniBot</h2>
-        <div id="version">v0.18.1</div>
-    </div>
+    <div id="popup-container">
+        <div class="header">
+            <h2>HamzaniBot</h2>
+            <div id="version">v0.18.1</div>
+        </div>
 
-    <div id="debugStatus" class="status">Initializing...</div>
-    
-    <div class="section">
-        <h3>Bot Control</h3>
-        <button id="toggleBot">Start Bot</button>
-        <div class="stats">
-            <div class="stat-item">
-                Messages Sent: <span id="messagesSent">0</span>
+        <div id="debugStatus" class="status">Initializing...</div>
+        
+        <div class="section">
+            <h3>Bot Control</h3>
+            <button id="toggleBot">Start Bot</button>
+            <div class="stats">
+                <div class="stat-item">
+                    Messages Sent: <span id="messagesSent">0</span>
+                </div>
+                <div class="stat-item">
+                    Messages Received: <span id="messagesReceived">0</span>
+                </div>
             </div>
-            <div class="stat-item">
-                Messages Received: <span id="messagesReceived">0</span>
+        </div>
+
+        <div class="section">
+            <h3>Mass Messaging</h3>
+            <div class="settings-row">
+                <label>Enable Mass Messaging</label>
+                <input type="checkbox" id="enableMassMessaging">
+            </div>
+            <div class="settings-row">
+                <label>Message Delay (seconds)</label>
+                <input type="number" id="messageDelay" min="0" max="60" value="5">
+            </div>
+            <button id="sendMassMessage">Send Mass Message</button>
+        </div>
+
+        <div class="section">
+            <h3>Custom Mass Message</h3>
+            <div class="settings-row">
+                <textarea id="customMessage" 
+                          placeholder="Enter your message here..."
+                          rows="4" 
+                          style="width: 100%; margin-bottom: 10px; background: #333; color: #fff; border: 1px solid #555; padding: 8px;"></textarea>
+            </div>
+            <div class="settings-row">
+                <label>Recipient Count</label>
+                <input type="number" id="recipientCount" min="1" max="100" value="10">
+            </div>
+            <button id="sendCustomMessage">Send Custom Message</button>
+        </div>
+
+        <div class="section">
+            <h3>AI Settings</h3>
+            <div class="settings-row">
+                <label>Chat Style</label>
+                <select id="chatStyle">
+                    <option value="youth">Youthful</option>
+                    <option value="mature">Mature</option>
+                </select>
+            </div>
+            <div class="settings-row">
+                <label>Response Speed</label>
+                <select id="typingSpeed">
+                    <option value="fast">Fast</option>
+                    <option value="medium">Medium</option>
+                    <option value="slow">Slow</option>
+                </select>
             </div>
         </div>
-    </div>
 
-    <div class="section">
-        <h3>Mass Messaging</h3>
-        <div class="settings-row">
-            <label>Enable Mass Messaging</label>
-            <input type="checkbox" id="enableMassMessaging">
-        </div>
-        <div class="settings-row">
-            <label>Message Delay (seconds)</label>
-            <input type="number" id="messageDelay" min="0" max="60" value="5">
-        </div>
-        <button id="sendMassMessage">Send Mass Message</button>
-    </div>
-
-    <div class="section">
-        <h3>Custom Mass Message</h3>
-        <div class="settings-row">
-            <textarea id="customMessage" 
-                      placeholder="Enter your message here..."
-                      rows="4" 
-                      style="width: 100%; margin-bottom: 10px; background: #333; color: #fff; border: 1px solid #555; padding: 8px;"></textarea>
-        </div>
-        <div class="settings-row">
-            <label>Recipient Count</label>
-            <input type="number" id="recipientCount" min="1" max="100" value="10">
-        </div>
-        <button id="sendCustomMessage">Send Custom Message</button>
-    </div>
-
-    <div class="section">
-        <h3>AI Settings</h3>
-        <div class="settings-row">
-            <label>Chat Style</label>
-            <select id="chatStyle">
-                <option value="youth">Youthful</option>
-                <option value="mature">Mature</option>
-            </select>
-        </div>
-        <div class="settings-row">
-            <label>Response Speed</label>
-            <select id="typingSpeed">
-                <option value="fast">Fast</option>
-                <option value="medium">Medium</option>
-                <option value="slow">Slow</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="section">
-        <h3>Debug Logs</h3>
-        <div id="logsContainer" style="height: 200px; overflow-y: auto; background: #1a1a1a; padding: 10px; font-family: monospace; font-size: 12px;">
+        <div class="section">
+            <h3>Debug Logs</h3>
+            <div id="logsContainer" style="height: 200px; overflow-y: auto; background: #1a1a1a; padding: 10px; font-family: monospace; font-size: 12px;">
+            </div>
         </div>
     </div>
 

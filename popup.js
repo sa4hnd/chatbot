@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (message.type === 'LOG_UPDATE') {
             addLogToUI(message.log);
         }
+        if (message.type === 'MASS_MESSAGE_STATUS') {
+            updateMassMessageStatus(message.status);
+        }
     });
 
     // Toggle bot
@@ -154,5 +157,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (logsContainer.children.length > 100) {
             logsContainer.removeChild(logsContainer.lastChild);
         }
+    }
+
+    function updateMassMessageStatus(status) {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'log-entry info';
+        statusDiv.textContent = status;
+        document.getElementById('logsContainer').insertBefore(statusDiv, document.getElementById('logsContainer').firstChild);
     }
 });
