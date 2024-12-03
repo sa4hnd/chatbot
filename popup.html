@@ -2,181 +2,103 @@
 <html>
 <head>
     <title>HamzaniBot</title>
-    <style>
-        body {
-            width: 400px;
-            min-height: 600px;
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #1a1a1a;
-            color: #fff;
-            position: relative;
-            overflow-y: auto;
-        }
-        #popup-container {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 100vh;
-            background: #1a1a1a;
-            z-index: 999998;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .status {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            background: #333;
-        }
-        .status.active {
-            background: #4CAF50;
-        }
-        .status.inactive {
-            background: #f44336;
-        }
-        .section {
-            margin: 15px 0;
-            padding: 15px;
-            background: #2d2d2d;
-            border-radius: 8px;
-        }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background: #4a90e2;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #357abd;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .stat-item {
-            background: #333;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .settings-row {
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .log-entry {
-            margin: 2px 0;
-            padding: 2px 5px;
-            border-radius: 2px;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .log-entry.error { color: #ff4444; }
-        .log-entry.warn { color: #ffbb33; }
-        .log-entry.info { color: #00C851; }
-        .log-entry.debug { color: #33b5e5; }
-    </style>
+    <link rel="stylesheet" href="styles/popup.css">
 </head>
 <body>
-    <div id="popup-container">
-        <div class="header">
-            <h2>HamzaniBot</h2>
-            <div id="version">v0.18.1</div>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-section">
+                <img src="hamzanibot.png" alt="HamzaniBot" class="logo">
+                <h1>HamzaniBot</h1>
+            </div>
+            <span class="version-badge">v0.18.1</span>
+        </header>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div id="debugStatus" class="status-indicator">Initializing...</div>
+            <button id="toggleBot" class="primary-button">Start Bot</button>
         </div>
 
-        <div id="debugStatus" class="status">Initializing...</div>
-        
-        <div class="section">
-            <h3>Bot Control</h3>
-            <button id="toggleBot">Start Bot</button>
-            <div class="stats">
-                <div class="stat-item">
-                    Messages Sent: <span id="messagesSent">0</span>
+        <!-- Stats Cards -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📤</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="messagesSent">0</span>
+                    <span class="stat-label">Messages Sent</span>
                 </div>
-                <div class="stat-item">
-                    Messages Received: <span id="messagesReceived">0</span>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📥</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="messagesReceived">0</span>
+                    <span class="stat-label">Messages Received</span>
                 </div>
             </div>
         </div>
 
-        <div class="section">
-            <h3>Mass Messaging</h3>
-            <div class="settings-row">
-                <label>Enable Mass Messaging</label>
-                <input type="checkbox" id="enableMassMessaging">
-            </div>
-            <div class="settings-row">
-                <label>Message Delay (seconds)</label>
-                <input type="number" id="messageDelay" min="0" max="60" value="5">
-            </div>
-            <button id="sendMassMessage">Send Mass Message</button>
-        </div>
+        <!-- Main Controls -->
+        <div class="control-sections">
+            <!-- Mass Messaging Section -->
+            <section class="control-section">
+                <h2>Mass Messaging</h2>
+                <div class="control-group">
+                    <label class="switch-label">
+                        <span>Enable Mass Messaging</span>
+                        <label class="switch">
+                            <input type="checkbox" id="enableMassMessaging">
+                            <span class="slider"></span>
+                        </label>
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label>Message Delay (seconds)</label>
+                    <input type="number" id="messageDelay" min="0" max="60" value="5" class="number-input">
+                </div>
+            </section>
 
-        <div class="section">
-            <h3>Custom Mass Message</h3>
-            <div class="settings-row">
+            <!-- Custom Message Section -->
+            <section class="control-section">
+                <h2>Custom Message</h2>
                 <textarea id="customMessage" 
-                          placeholder="Enter your message here..."
-                          rows="4" 
-                          style="width: 100%; margin-bottom: 10px; background: #333; color: #fff; border: 1px solid #555; padding: 8px;"></textarea>
-            </div>
-            <div class="settings-row">
-                <label>Recipient Count</label>
-                <input type="number" id="recipientCount" min="1" max="100" value="10">
-            </div>
-            <button id="sendCustomMessage">Send Custom Message</button>
+                    placeholder="Enter your message here..."
+                    class="message-input"></textarea>
+                <div class="control-group">
+                    <label>Recipients</label>
+                    <input type="number" id="recipientCount" min="1" max="100" value="10" class="number-input">
+                </div>
+                <button id="sendCustomMessage" class="action-button">Send Message</button>
+            </section>
+
+            <!-- AI Settings Section -->
+            <section class="control-section">
+                <h2>AI Settings</h2>
+                <div class="control-group">
+                    <label>Chat Style</label>
+                    <select id="chatStyle" class="select-input">
+                        <option value="youth">Youthful</option>
+                        <option value="mature">Mature</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Response Speed</label>
+                    <select id="typingSpeed" class="select-input">
+                        <option value="fast">Fast</option>
+                        <option value="medium">Medium</option>
+                        <option value="slow">Slow</option>
+                    </select>
+                </div>
+            </section>
         </div>
 
-        <div class="section">
-            <h3>AI Settings</h3>
-            <div class="settings-row">
-                <label>Chat Style</label>
-                <select id="chatStyle">
-                    <option value="youth">Youthful</option>
-                    <option value="mature">Mature</option>
-                </select>
-            </div>
-            <div class="settings-row">
-                <label>Response Speed</label>
-                <select id="typingSpeed">
-                    <option value="fast">Fast</option>
-                    <option value="medium">Medium</option>
-                    <option value="slow">Slow</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3>Debug Logs</h3>
-            <div id="logsContainer" style="height: 200px; overflow-y: auto; background: #1a1a1a; padding: 10px; font-family: monospace; font-size: 12px;">
-            </div>
-        </div>
+        <!-- Logs Section -->
+        <section class="logs-section">
+            <h2>Debug Logs</h2>
+            <div id="logsContainer" class="logs-container"></div>
+        </section>
     </div>
-
     <script src="popup.js"></script>
-    <script>
-        // Prevent popup from closing when clicking outside
-        window.onclick = function(e) {
-            e.stopPropagation();
-        };
-        
-        // Prevent popup from closing when pressing Escape
-        window.onkeydown = function(e) {
-            if (e.key === 'Escape') {
-                e.stopPropagation();
-            }
-        };
-    </script>
 </body>
 </html>

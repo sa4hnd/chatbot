@@ -932,7 +932,6 @@ async function exchangeCodeForToken(code) {
         throw error;
     }
 }
-
 // Add proactive messaging functionality
 async function startProactiveMessaging() {
     if (!botState.settings.massMessageData.isEnabled) return;
@@ -1190,7 +1189,6 @@ async function ensurePopupVisible() {
         console.error('Failed to create popup:', error);
     }
 }
-
 // Update your initialization
 chrome.action.onClicked.addListener(async () => {
     await ensurePopupVisible();
@@ -1205,3 +1203,5 @@ chrome.runtime.onInstalled.addListener(async () => {
 chrome.runtime.onStartup.addListener(async () => {
     await ensurePopupVisible();
 });
+
+
